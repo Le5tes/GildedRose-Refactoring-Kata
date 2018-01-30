@@ -8,58 +8,80 @@ class Item {
 
 class Shop {
   constructor(items=[]){
-    this.items = items;
+    console.log(items)
+    this.items = items.map(function(item){return new StoreItem(item) });
+    console.log(this.items)
   }
   updateQuality() {
     for (var i = 0; i < this.items.length; i++) {
-      if (this._isNotSulphuras(i)){
-        this.items[i].sellIn = this.items[i].sellIn - 1;
+        this.items[i].updateQuality()
+        
+      
 
-        switch (this.items[i].name) {
+    }     
+
+    return this.items;
+  }
+
+  
+
+ 
+}
+
+class StoreItem {
+  constructor(item) {
+    this.name = item.name
+    this.quality = item.quality
+    this.sellIn = item.sellIn
+  }
+
+  updateQuality(){
+    if (this._isNotSulphuras()){
+      this.sellIn --
+      switch (this.name) {
           case 'Aged Brie':
-            this._increaseQuality(this.items[i])
+            this._increaseQuality()
             break;
 
           case 'Backstage passes to a TAFKAL80ETC concert': 
-            if (this.items[i].sellIn < 0) {
-              this.items[i].quality = 0
+            if (this.sellIn < 0) {
+              this.quality = 0
             } else {
-              this._increaseQuality(this.items[i]);
-              if (this.items[i].sellIn < 11) {
-                this._increaseQuality(this.items[i]);};
-              if (this.items[i].sellIn < 6) {
-                this._increaseQuality(this.items[i]);};
+              this._increaseQuality();
+              if (this.sellIn < 11) {
+                this._increaseQuality();
+              };
+              if (this.sellIn < 6) {
+                this._increaseQuality();
+              };
             }
             break;
 
           default:
             
-            this._decreaseQuality(this.items[i]);
-            if (this.items[i].sellIn < 0) {
-             this._decreaseQuality(this.items[i]);
+            this._decreaseQuality();
+            if (this.sellIn < 0) {
+             this._decreaseQuality();
             }
             
         };
-      }
-    }
-      
 
-    return this.items;
-  }
-
-  _isNotSulphuras(i) {
-    return this.items[i].name != 'Sulfuras, Hand of Ragnaros'
-  }
-
-  _decreaseQuality(item) {
-    if (item.quality > 0) {
-      item.quality --
     }
   }
 
-  _increaseQuality(item) {
-    if (item.quality < 50) {
-      item.quality ++
+  _isNotSulphuras() {
+    return this.name != 'Sulfuras, Hand of Ragnaros'
+  }
+
+  _increaseQuality() {
+    if (this.quality < 50) {
+      this.quality ++
+    }
+  }
+
+  _decreaseQuality() {
+    if (this.quality > 0) {
+      this.quality --
     }
   }
 }
