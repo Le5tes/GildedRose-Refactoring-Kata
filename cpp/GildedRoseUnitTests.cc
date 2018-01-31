@@ -43,6 +43,47 @@ TEST(GildedRoseTest, DoesntDegradeBelowZero) {
     EXPECT_EQ(0, app.items[0].quality);
 }
 
+TEST(GildedRoseTest, SulfurasNeverChanges) {
+    vector<Item> items;
+    items.push_back(Item("Sulfuras, Hand of Ragnaros", 5, 5));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(5, app.items[0].quality);
+    EXPECT_EQ(5, app.items[0].sellIn);
+}
+
+TEST(GildedRoseTest, AgedBrieGetsMoreValuable) {
+    vector<Item> items;
+    items.push_back(Item("Aged Brie", 5, 5));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(6, app.items[0].quality);
+}
+
+TEST(GildedRoseTest, NeverMoreThanFifty) {
+    vector<Item> items;
+    items.push_back(Item("Aged Brie", 5, 50));
+    items.push_back(Item("Backstage passes to a TAFKAL80ETC concert", 5, 50));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(50, app.items[0].quality);
+    EXPECT_EQ(50, app.items[1].quality);
+}
+
+TEST(GildedRoseTest, BackstagePasses) {
+    vector<Item> items;
+    items.push_back(Item("Backstage passes to a TAFKAL80ETC concert", 15, 5));
+    items.push_back(Item("Backstage passes to a TAFKAL80ETC concert", 10, 5));
+    items.push_back(Item("Backstage passes to a TAFKAL80ETC concert", 5, 5));
+    items.push_back(Item("Backstage passes to a TAFKAL80ETC concert", 0, 5));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(6, app.items[0].quality);
+    EXPECT_EQ(7, app.items[1].quality);
+    EXPECT_EQ(8, app.items[2].quality);
+    EXPECT_EQ(0, app.items[3].quality);
+}
+
 void example()
 {
     vector<Item> items;
