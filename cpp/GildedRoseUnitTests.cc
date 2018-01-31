@@ -2,12 +2,45 @@
 
 #include "GildedRose.h"
 
-TEST(GildedRoseTest, Foo) {
+
+TEST(GildedRoseTest, Name) {
     vector<Item> items;
     items.push_back(Item("Foo", 0, 0));
     GildedRose app(items);
     app.updateQuality();
-    EXPECT_EQ("fixme", app.items[0].name);
+    EXPECT_EQ("Foo", app.items[0].name);
+}
+
+TEST(GildedRoseTest, SellInReduces) {
+    vector<Item> items;
+    items.push_back(Item("Foo", 5, 5));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(4, app.items[0].sellIn);
+}
+
+TEST(GildedRoseTest, Degrades) {
+    vector<Item> items;
+    items.push_back(Item("Foo", 5, 5));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(4, app.items[0].quality);
+}
+
+TEST(GildedRoseTest, DegradesDoubleOnceSellInZero) {
+    vector<Item> items;
+    items.push_back(Item("Foo", 0, 5));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(3, app.items[0].quality);
+}
+
+TEST(GildedRoseTest, DoesntDegradeBelowZero) {
+    vector<Item> items;
+    items.push_back(Item("Foo", 0, 0));
+    GildedRose app(items);
+    app.updateQuality();
+    EXPECT_EQ(0, app.items[0].quality);
 }
 
 void example()
