@@ -79,5 +79,17 @@ describe("Gilded Rose", function() {
       expect(items[3].quality).toEqual(0);
     });
   });
+  describe("Conjured Items", function(){
+  	beforeEach(function(){
+  	  const gildedRose = new Shop([ new Item('Conjured Mana Cake', 15, 15),new Item('Conjured Mana Cake', 0, 15)]);
+  	  items = gildedRose.updateQuality();
+    });
+  	it("should degrade by 2 per day", function(){
+  	  expect(items[0].quality).toEqual(13);
+  	});
+  	it("should degrade by 4 if the sellIn is less than 0", function(){
+  	  expect(items[1].quality).toEqual(11);
+  	});
+  })
 
 });
