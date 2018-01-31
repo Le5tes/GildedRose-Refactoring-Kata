@@ -11,15 +11,11 @@ class Shop {
 
     const itemTypeHash = {
       'Aged Brie': AgedBrie,
-      'Backstage passes': BackstagePass,
-      'Sulfuras': LegendaryItem
+      'Backstage passes to a TAFKAL80ETC concert': BackstagePass,
+      'Sulfuras, Hand of Ragnaros': LegendaryItem
     }
     this.items = items.map(function(item){
-      const itemName = Object.keys(itemTypeHash).find(function(key){
-        return item.name.includes(key)
-      })
-      const itemType = itemTypeHash[itemName] || RegularItem
-  
+      const itemType = itemTypeHash[item.name] || RegularItem
       return new itemType(item) 
     });
   }
@@ -42,7 +38,6 @@ class StoreItem {
   }
 
   updateQuality(){} 
-
   
   _increaseQuality() {
     if (this.quality < 50) {
@@ -72,7 +67,6 @@ class AgedBrie extends StoreItem{
     this.sellIn --
     this._increaseQuality()
   }
-
 }
 
 class BackstagePass extends StoreItem{
