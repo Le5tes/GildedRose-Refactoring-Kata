@@ -15,7 +15,7 @@ class Shop {
       'Sulfuras, Hand of Ragnaros': LegendaryItem
     }
     this.items = items.map(function(item){
-      const itemType = itemTypeHash[item.name] || RegularItem
+      const itemType = itemTypeHash[item.name] || StoreItem
       return new itemType(item) 
     });
   }
@@ -37,7 +37,13 @@ class StoreItem {
     this.sellIn = item.sellIn 
   }
 
-  updateQuality(){} 
+  updateQuality(){
+    this.sellIn --
+    this._decreaseQuality();
+    if (this.sellIn < 0) {
+      this._decreaseQuality();
+    }
+  } 
   
   _increaseQuality() {
     if (this.quality < 50) {
@@ -49,16 +55,6 @@ class StoreItem {
     if (this.quality > 0) {
       this.quality --
     }
-  }
-}
-
-class RegularItem extends StoreItem{
-  updateQuality(){
-    this.sellIn --
-    this._decreaseQuality();
-    if (this.sellIn < 0) {
-      this._decreaseQuality();
-    } 
   }
 }
 
