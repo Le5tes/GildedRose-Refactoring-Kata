@@ -8,7 +8,20 @@ class Item {
 
 class Shop {
   constructor(items=[]){
-    this.items = items.map(function(item){return new StoreItem(item) });
+
+    const itemTypeHash = {
+      'Aged Brie': AgedBrie,
+      'Backstage passes': BackstagePass,
+      'Sulfuras': LegendaryItem
+    }
+    this.items = items.map(function(item){
+      const itemName = Object.keys(itemTypeHash).find(function(key){
+        return item.name.includes(key)
+      })
+      const itemType = itemTypeHash[itemName] || RegularItem
+  
+      return new itemType(item) 
+    });
   }
   updateQuality() {
     for (var i = 0; i < this.items.length; i++) {
@@ -19,65 +32,18 @@ class Shop {
  
 }
 
+
+
 class StoreItem {
   constructor(item) {
     this.name = item.name
     this.quality = item.quality
-    this.sellIn = item.sellIn
-    
+    this.sellIn = item.sellIn 
   }
 
-  updateQuality(){
-    if (this._isNotSulphuras()){
-      this.sellIn --
-      switch (this.name) {
-          case 'Aged Brie':
-            this.agedBrieUpdate()
-            break;
+  updateQuality(){} 
 
-          case 'Backstage passes to a TAFKAL80ETC concert': 
-            this.backstagePassUpdate()
-            break;
-
-          default:
-            
-            this.regularItemUpdate()
-            }
-            
-        };
-
-    }
-
-  agedBrieUpdate () {
-    this._increaseQuality()
-  }
-
-  backstagePassUpdate () {
-    if (this.sellIn < 0) {
-      this.quality = 0
-    } else {
-      this._increaseQuality();
-      if (this.sellIn < 11) {
-        this._increaseQuality();
-      };
-      if (this.sellIn < 6) {
-        this._increaseQuality();
-      };
-    }
-  }
-
-  regularItemUpdate() {
-    this._decreaseQuality();
-    if (this.sellIn < 0) {
-      this._decreaseQuality();
-    }
-  }
   
-
-  _isNotSulphuras() {
-    return this.name != 'Sulfuras, Hand of Ragnaros'
-  }
-
   _increaseQuality() {
     if (this.quality < 50) {
       this.quality ++
@@ -91,7 +57,45 @@ class StoreItem {
   }
 }
 
+class RegularItem extends StoreItem{
+  updateQuality(){
+    this.sellIn --
+    this._decreaseQuality();
+    if (this.sellIn < 0) {
+      this._decreaseQuality();
+    } 
+  }
+}
 
+class AgedBrie extends StoreItem{
+  updateQuality(){
+    this.sellIn --
+    this._increaseQuality()
+  }
 
+}
+
+class BackstagePass extends StoreItem{
+  updateQuality(){ 
+    this.sellIn --
+    if (this.sellIn < 0) {
+      this.quality = 0
+    } else {
+      this._increaseQuality();
+      if (this.sellIn < 11) {
+        this._increaseQuality();
+      };
+      if (this.sellIn < 6) {
+        this._increaseQuality();
+      };
+    }
+  }
+}
+
+class LegendaryItem extends StoreItem{
+  updateQuality(){}
+}
+  
+  
 
 
