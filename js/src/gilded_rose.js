@@ -8,23 +8,14 @@ class Item {
 
 class Shop {
   constructor(items=[]){
-    console.log(items)
     this.items = items.map(function(item){return new StoreItem(item) });
-    console.log(this.items)
   }
   updateQuality() {
     for (var i = 0; i < this.items.length; i++) {
         this.items[i].updateQuality()
-        
-      
-
     }     
-
     return this.items;
-  }
-
-  
-
+  } 
  
 }
 
@@ -33,6 +24,7 @@ class StoreItem {
     this.name = item.name
     this.quality = item.quality
     this.sellIn = item.sellIn
+    
   }
 
   updateQuality(){
@@ -40,34 +32,47 @@ class StoreItem {
       this.sellIn --
       switch (this.name) {
           case 'Aged Brie':
-            this._increaseQuality()
+            this.agedBrieUpdate()
             break;
 
           case 'Backstage passes to a TAFKAL80ETC concert': 
-            if (this.sellIn < 0) {
-              this.quality = 0
-            } else {
-              this._increaseQuality();
-              if (this.sellIn < 11) {
-                this._increaseQuality();
-              };
-              if (this.sellIn < 6) {
-                this._increaseQuality();
-              };
-            }
+            this.backstagePassUpdate()
             break;
 
           default:
             
-            this._decreaseQuality();
-            if (this.sellIn < 0) {
-             this._decreaseQuality();
+            this.regularItemUpdate()
             }
             
         };
 
     }
+
+  agedBrieUpdate () {
+    this._increaseQuality()
   }
+
+  backstagePassUpdate () {
+    if (this.sellIn < 0) {
+      this.quality = 0
+    } else {
+      this._increaseQuality();
+      if (this.sellIn < 11) {
+        this._increaseQuality();
+      };
+      if (this.sellIn < 6) {
+        this._increaseQuality();
+      };
+    }
+  }
+
+  regularItemUpdate() {
+    this._decreaseQuality();
+    if (this.sellIn < 0) {
+      this._decreaseQuality();
+    }
+  }
+  
 
   _isNotSulphuras() {
     return this.name != 'Sulfuras, Hand of Ragnaros'
@@ -85,3 +90,8 @@ class StoreItem {
     }
   }
 }
+
+
+
+
+
