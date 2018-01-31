@@ -79,6 +79,5 @@ describe("Gilded Rose", function() {
       expect(items[3].quality).toEqual(0);
     });
   });
-  
 
 });

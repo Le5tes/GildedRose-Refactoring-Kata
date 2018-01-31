@@ -8,7 +8,6 @@ class Item {
 
 class Shop {
   constructor(items=[]){
-
     const itemTypeHash = {
       'Aged Brie': AgedBrie,
       'Backstage passes to a TAFKAL80ETC concert': BackstagePass,
@@ -19,16 +18,15 @@ class Shop {
       return new itemType(item) 
     });
   }
+
   updateQuality() {
     for (var i = 0; i < this.items.length; i++) {
-        this.items[i].updateQuality()
+      this.items[i].updateQuality()
     }     
     return this.items;
   } 
  
 }
-
-
 
 class StoreItem {
   constructor(item) {
