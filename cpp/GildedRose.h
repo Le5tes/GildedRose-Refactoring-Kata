@@ -13,6 +13,27 @@ public:
     {}
 };
 
+class StoreItem
+{
+public:
+	Item item;
+	StoreItem(Item item) : item(item)
+	{}
+
+	string name(){
+		return item.name;
+	}
+
+	int quality(){
+		return item.quality;
+	}
+
+	int sellIn(){
+		return item.sellIn;
+	}
+
+};
+
 class GildedRose
 {
 public:
@@ -21,4 +42,3 @@ public:
     
     void updateQuality();
 };
-

@@ -84,6 +84,21 @@ TEST(GildedRoseTest, BackstagePasses) {
     EXPECT_EQ(0, app.items[3].quality);
 }
 
+TEST(StoreItemTest, Name) {
+    StoreItem myItem(Item("Foo",5,5));
+    EXPECT_EQ("Foo", myItem.name());
+}
+
+TEST(StoreItemTest, Quality) {
+    StoreItem myItem(Item("Foo",5,5));
+    EXPECT_EQ(5, myItem.quality());
+}
+
+TEST(StoreItemTest,SellIn) {
+    StoreItem myItem(Item("Foo",5,5));
+    EXPECT_EQ(5, myItem.sellIn());
+}
+
 void example()
 {
     vector<Item> items;
